@@ -41,6 +41,7 @@ ARG NGINX_PROXY_MANAGER_VERSION
 ARG NGINX_PROXY_MANAGER_URL
 COPY --from=xx / /
 COPY src/nginx-proxy-manager /build
+RUN chmod +x /build/build.sh
 RUN /build/build.sh "$NGINX_PROXY_MANAGER_VERSION" "$NGINX_PROXY_MANAGER_URL"
 
 # Build OpenResty (nginx).
@@ -51,6 +52,7 @@ ARG NGINX_HTTP_GEOIP2_MODULE_URL
 ARG LIBMAXMINDDB_URL
 COPY --from=xx / /
 COPY src/openresty /build
+RUN chmod +x /build/build.sh
 RUN /build/build.sh "$OPENRESTY_URL" "$NGINX_HTTP_GEOIP2_MODULE_URL" "$LIBMAXMINDDB_URL"
 RUN xx-verify /tmp/openresty-install/usr/sbin/nginx
 
@@ -60,6 +62,7 @@ ARG TARGETPLATFORM
 ARG BCRYPT_TOOL_VERSION
 COPY --from=xx / /
 COPY src/bcrypt-tool /build
+RUN chmod +x /build/build.sh
 RUN /build/build.sh "$BCRYPT_TOOL_VERSION"
 RUN xx-verify /tmp/go/bin/bcrypt-tool
 COPY --from=upx /usr/bin/upx /usr/bin/upx
